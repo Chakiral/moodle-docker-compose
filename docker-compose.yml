@@ -1,0 +1,30 @@
+version: "3.3"
+
+volumes:
+  moodle:
+  db_moodle:
+
+services:
+  db_moodle:
+    image: mariadb
+    container_name: "db_moodle"
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - db_moodle:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=thisismyrootpassword
+      - MYSQL_PASSWORD=thisismysqlpassword
+      - MYSQL_DATABASE=moodle
+      - MYSQL_USER=moodle
+
+  app:
+    image: moodle
+    links:
+      - db_moodle
+    volumes:
+      - moodle:/var/www/html
+    ports:
+      - 9595:80
+    restart: always
+    container_name: "moodle"
