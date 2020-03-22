@@ -1,9 +1,9 @@
-# From https://hub.docker.com/r/moodlehq/moodle-php-apache/dockerfile
 FROM php:7.1-apache-buster
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install --no-install-recommends --yes \
     wget \
+    cron \
     libzip-dev \
     zip \
     zlib1g-dev \
@@ -54,6 +54,15 @@ RUN cd /var/www/ \
 
 COPY admin-cron /etc/cron.d/admin-cron.job
 
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/admin-cron.job
+
+# Apply cron job
+RUN crontab /etc/cron.d/admin-cron.job
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+
 WORKDIR /var/www/html/
 
-CMD ["apache2-foreground"]
+CMD "apache2-foreground" && "/usr/sbin/cron"
