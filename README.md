@@ -10,6 +10,8 @@ from https://download.moodle.org/releases/latest/
 Prerequisite :
 docker, docker-compose
 
+Don't forget to change your mariadb password in the docker-compose.yml file line 16 to 18
+
 Build the docker image using:
 `docker build -t moodle .`
 
