@@ -19,6 +19,9 @@ Wait for some minutes to let it finish
 Then deploy with
 `docker-compose up -d`
 
+You site will be available at port 9595 
+(you can change this by whatever seems relevant, or serve it behind a proxy)
+
 It's quick and ugly, no check-sum from download, but... 
 
 I kept it simple
